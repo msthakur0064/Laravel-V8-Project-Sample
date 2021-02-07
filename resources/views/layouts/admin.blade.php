@@ -10,15 +10,16 @@
 	@include('layouts.admin.head')
 </head>
 
-<body class="hold-transition skin-red layout-top-nav">
+<body class="hold-transition skin-red sidebar-mini">
 	<div class="wrapper">
 		<header class="main-header">
 			@include('layouts.admin.header')
 		</header>
+		<aside class="main-sidebar">
+			@include('layouts.admin.sidebar')
+		</aside>
 		<div class="content-wrapper">
-			<div class="container">
-				@yield('content')
-			</div>
+			@yield('content')
 		</div>
 		<footer class="main-footer">
 			@include('layouts.admin.footer')

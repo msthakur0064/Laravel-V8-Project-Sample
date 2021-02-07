@@ -21,19 +21,19 @@
         </div>
         <div class="login-box-body">
             <p class="login-box-msg text-bold">ADMIN SignIn</p>
-            @if(\Session::get('success'))
+            @if(Session::has('success'))
             <div class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <p> {{ \Session::get('success') }}</p>
+                <p> {{ Session::get('success') }}</p>
             </div>
             @endif
-            @if(\Session::get('error'))
+            @if(Session::has('error'))
             <div class="alert alert-danger alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <p> {{ \Session::get('error') }}</p>
+                <p> {{ Session::get('error') }}</p>
             </div>
             @endif
-            <form action="{{ route('admin.loginPost') }}" method="post">
+            <form action="{{ route('admin.login.submit') }}" method="post">
                 {!! csrf_field() !!}
                 <div class="form-group has-feedback">
                     <input type="email" name="email" class="form-control" placeholder="Email">
@@ -47,7 +47,7 @@
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
                             <label>
-                                <input type="checkbox"> Remember Me
+                                <input type="checkbox" name="rememberMe"> Remember Me
                             </label>
                         </div>
                     </div>

@@ -2,17 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Model;
 
-class admin extends Model {
-    use Notifiable;
+class admin extends Authenticatable {
+    use HasFactory, Notifiable;
 
     /**
      * table name
      */
     protected $table = 'admin';
+
+    /**
+     * overwrite column name
+     */
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
+    const DELETED_AT = 'deletedAt';
 
     /**
      * The attributes that are mass assignable.
@@ -33,6 +40,18 @@ class admin extends Model {
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'rememberToken',
     ];
+
+    public function getRememberToken() {
+        return $this->rememberToken;
+    }
+
+    public function setRememberToken($value) {
+        $this->rememberToken = $value;
+    }
+
+    public function getRememberTokenName() {
+        return 'rememberToken';
+    }
 }

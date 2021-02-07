@@ -2,13 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable {
     use HasFactory, Notifiable;
+
+    /**
+     * table name
+     */
+    protected $table = 'user';
+
+    /**
+     * overwrite column name
+     */
+    const CREATED_AT = 'createdAt';
+    const UPDATED_AT = 'updatedAt';
+    const DELETED_AT = 'deletedAt';
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +41,7 @@ class User extends Authenticatable {
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'rememberToken',
     ];
 
     /**
@@ -39,6 +50,18 @@ class User extends Authenticatable {
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'emailVerifiedAt' => 'datetime',
     ];
+
+    public function getRememberToken() {
+        return $this->rememberToken;
+    }
+
+    public function setRememberToken($value) {
+        $this->rememberToken = $value;
+    }
+
+    public function getRememberTokenName() {
+        return 'rememberToken';
+    }
 }

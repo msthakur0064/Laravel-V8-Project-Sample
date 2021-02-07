@@ -4,22 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class User extends Migration {
+class Category extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
     public function up() {
-        Schema::create('user', function (Blueprint $table) {
+        Schema::create('category', function (Blueprint $table) {
             $table->id();
-            $table->string('firstName', 100);
-            $table->string('lastName', 100);
-            $table->string('email', 250)->unique();
-            $table->string('username', 50)->unique();
-            $table->string('password', 250);
-            $table->string('rememberToken', 200)->nullable();
-            $table->timestamp('emailVerifiedAt')->nullable();
+            $table->string('name', 100);
+            $table->string('slug', 100)->unique();
+            $table->string('image', 250);
+            $table->text('description')->nullable();
+            $table->smallInteger('status')->default(0)->comment('0:Inactive, 1:Active');
             $table->timestamp('createdAt')->nullable();
             $table->timestamp('updatedAt')->nullable();
             $table->softDeletes('deletedAt');
@@ -32,6 +30,6 @@ class User extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('user');
+        Schema::dropIfExists('category');
     }
 }

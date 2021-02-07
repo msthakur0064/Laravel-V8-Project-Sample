@@ -3,24 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-// use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use App\Models\Admin;
-
+use Auth;
+use Session;
 
 /**
  * admin auth controller
  */
 class AuthController extends Controller {
-    // use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/admin/login';
-
     /**
      * Create a new controller instance.
      *
@@ -34,25 +24,30 @@ class AuthController extends Controller {
      * admin login page view
      */
     public function login() {
+        if (Auth::guard('admin')->check()) {
+            return redirect(route('admin.dashboard'));
+        }
         return view('admin.login');
     }
 
-
     /**
-     * Show the application loginprocess.
+     * Show the application login process.
      *
      * @return \Illuminate\Http\Response
      */
     public function loginPost(Request $request) {
         $this->validate($request, [
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|min:6',
         ]);
-        $adminData = ['email' => $request->input('email'), 'password' => $request->input('password')];
-        if (auth()->guard('admin')->attempt($adminData)) {
-            $user = auth()->guard('admin')->user();
-            \Session::put('success', 'You are Login successfully!!');
-            return redirect()->route('dashboard');
+        $rememberMe = (!empty($request->input('rememberMe'))) ? true : false;
+        $adminData = [
+            'email' => $request->input('email'),
+            'password' => $request->input('password')
+        ];
+        if (Auth::guard('admin')->attempt($adminData, $rememberMe)) {
+            Session::flash('success', 'Login successfully.');
+            return redirect()->route('admin.dashboard');
         } else {
             return back()->with('error', 'Username and password are wrong.');
         }
@@ -64,9 +59,8 @@ class AuthController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function logout() {
-        auth()->guard('admin')->logout();
-        \Session::flush();
-        \Sessioin::put('success', 'You are logout successfully');
-        return redirect(route('adminLogin'));
+        Auth::guard('admin')->logout();
+        Session::flash('success', 'Logout successfully.');
+        return redirect(route('admin.login'));
     }
 }

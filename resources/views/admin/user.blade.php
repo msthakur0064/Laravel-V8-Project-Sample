@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title','Dashboard')
+@section('title','User Management')
 
 @section('content')
 <section class="content">
-    Admin Page | Dashboard
+    Admin Page | User Management
 </section>
 @endsection
